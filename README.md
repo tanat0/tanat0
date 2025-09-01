@@ -4,13 +4,13 @@
 ---
 
 ### 🧩 Languages
-![Repos per language](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=tanat0&theme=calm)
-![Most commit language](https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=tanat0&theme=calm)
+![Repos per language](https://raw.githubusercontent.com/tanat0/tanat0/master/profile-summary-card-output/calm/2-most-commit-language.svg)
+![Most commit language](https://raw.githubusercontent.com/tanat0/tanat0/master/profile-summary-card-output/calm/1-repos-per-language.svg)
 
 ---
 
 ### 🐍 Contribution Graph
-![Snake animation](https://raw.githubusercontent.com/tanat0/tanat0/output/github-contribution-grid-snake.svg)
+![Snake animation](https://raw.githubusercontent.com/tanat0/tanat0/master/output/github-contribution-grid-snake.svg)
 
 ---
 
