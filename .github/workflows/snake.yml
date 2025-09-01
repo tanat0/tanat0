@@ -5,6 +5,9 @@ on:
     - cron: "0 0 * * *"   # раз в день
   workflow_dispatch:       # ручной запуск
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,10 +23,10 @@ jobs:
           outputs: |
             dist/github-contribution-grid-snake.svg
 
-      - name: Commit and push snake
+      - name: Commit snake
         uses: EndBug/add-and-commit@v9
         with:
-          message: "Generate snake"
+          message: "update snake"
           add: "dist/*"
 
       - name: Move snake to output
