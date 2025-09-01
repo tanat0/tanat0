@@ -20,6 +20,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           USERNAME: tanat0
+          BRANCH_NAME: main
           AUTO_PUSH: false   # отключаем автопуш
 
       - name: Commit summary cards
