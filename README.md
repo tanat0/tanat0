@@ -10,7 +10,11 @@
 ---
 
 ### 🐍 Contribution Graph
-![Snake animation](https://raw.githubusercontent.com/tanat0/tanat0/master/output/github-contribution-grid-snake.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/output/github-contribution-grid-snake-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/output/github-contribution-grid-snake.svg" />
+  <img alt="snake animation" src="https://raw.githubusercontent.com/tanat0/tanat0/main/output/github-contribution-grid-snake.svg" />
+</picture>
 
 ---
 
