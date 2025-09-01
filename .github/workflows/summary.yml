@@ -1,0 +1,25 @@
+name: Update summary cards
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # обновлять раз в день
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate summary cards
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          USERNAME: tanat0
+          THEME: github_light
+      - name: Commit summary cards
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "update summary cards"
+          add: "profile-summary-card-output"
+

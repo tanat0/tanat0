@@ -1,0 +1,33 @@
+name: Generate Snake
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # раз в день
+  workflow_dispatch:       # ручной запуск
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate snake
+        uses: Platane/snk@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          github_user_name: tanat0
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+
+      - name: Commit and push snake
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Generate snake"
+          add: "dist/*"
+
+      - name: Move snake to output
+        run: |
+          mkdir -p output
+          cp dist/github-contribution-grid-snake.svg output/
+
