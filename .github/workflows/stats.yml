@@ -1,0 +1,30 @@
+name: Update GitHub Stats
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # обновлять раз в день
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate GitHub Stats
+        # Используем GitHub Stats API с красивой темой dracula
+        # Примечание: github-readme-stats.vercel.app не поддерживает приватные репо через токен
+        # Для приватных репо нужно использовать GitHub API напрямую (см. scripts/generate_stats.py)
+        # Пока используем публичный API с параметрами для красивого отображения
+        run: |
+          curl -s "https://github-readme-stats.vercel.app/api?username=tanat0&show_icons=true&hide_border=true&bg_color=282A36&title_color=BD93F9&icon_color=BD93F9&text_color=F8F8F2&hide_rank=false&include_all_commits=true&count_private=true&theme=dracula" > github-stats.svg
+
+      - name: Commit stats
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "update github stats"
+          add: "github-stats.svg"
+
