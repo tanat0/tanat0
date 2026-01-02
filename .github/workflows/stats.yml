@@ -20,7 +20,13 @@ jobs:
         # Для приватных репо нужно использовать GitHub API напрямую (см. scripts/generate_stats.py)
         # Пока используем публичный API с параметрами для красивого отображения
         run: |
-          curl -s "https://github-readme-stats.vercel.app/api?username=tanat0&show_icons=true&hide_border=true&bg_color=282A36&title_color=BD93F9&icon_color=BD93F9&text_color=F8F8F2&hide_rank=false&include_all_commits=true&count_private=true&theme=dracula" > github-stats.svg
+          curl -s "https://github-readme-stats.vercel.app/api?username=tanat0&show_icons=true&hide_border=true&bg_color=282A36&title_color=BD93F9&icon_color=BD93F9&text_color=F8F8F2&hide_rank=false&include_all_commits=true&count_private=true&theme=dracula" > github-stats.svg || true
+          
+          # Проверяем, что файл создан и валиден (не содержит ошибок)
+          if [ ! -s github-stats.svg ] || grep -q "DEPLOYMENT_PAUSED\|unavailable\|404\|Error" github-stats.svg; then
+            echo "Service unavailable, keeping existing file"
+            git checkout github-stats.svg 2>/dev/null || true
+          fi
 
       - name: Commit stats
         uses: EndBug/add-and-commit@v9
