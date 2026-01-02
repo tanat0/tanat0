@@ -2,7 +2,7 @@
 
 <p align="center">
   <img
-    src="https://github-readme-stats.vercel.app/api?username=tanat0&show_icons=true&hide_border=true&bg_color=282A36&title_color=BD93F9&icon_color=BD93F9&text_color=F8F8F2&hide_rank=false&include_all_commits=true&count_private=true&theme=dracula"
+    src="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats.svg"
     alt="GitHub Stats"
   />
 </p>
