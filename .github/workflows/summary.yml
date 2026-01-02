@@ -17,11 +17,13 @@ jobs:
       - name: Generate summary cards
         uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           USERNAME: tanat0
           BRANCH_NAME: main
           AUTO_PUSH: false   # отключаем автопуш
+          # Используем dracula тему для более красивого отображения
+          # GITHUB_TOKEN автоматически предоставляет доступ к приватным репо
 
       - name: Commit summary cards
         uses: EndBug/add-and-commit@v9
