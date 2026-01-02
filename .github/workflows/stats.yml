@@ -15,16 +15,36 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Generate GitHub Stats
-        # Используем GitHub Stats API с красивой темой dracula
-        # Примечание: github-readme-stats.vercel.app не поддерживает приватные репо через токен
-        # Для приватных репо нужно использовать GitHub API напрямую (см. scripts/generate_stats.py)
-        # Пока используем публичный API с параметрами для красивого отображения
+        # Генерируем статистику через внешний API
+        # Используем тему dracula с красивыми цветами
+        # Если сервис недоступен, оставляем существующий файл
         run: |
-          curl -s "https://github-readme-stats.vercel.app/api?username=tanat0&show_icons=true&hide_border=true&bg_color=282A36&title_color=BD93F9&icon_color=BD93F9&text_color=F8F8F2&hide_rank=false&include_all_commits=true&count_private=true&theme=dracula" > github-stats.svg || true
+          # Функция для проверки валидности SVG
+          check_svg() {
+            if [ -s "$1" ] && ! grep -qiE "error|unavailable|503|404|deployment_paused" "$1" && grep -q "<svg" "$1"; then
+              return 0
+            fi
+            return 1
+          }
           
-          # Проверяем, что файл создан и валиден (не содержит ошибок)
-          if [ ! -s github-stats.svg ] || grep -q "DEPLOYMENT_PAUSED\|unavailable\|404\|Error" github-stats.svg; then
-            echo "Service unavailable, keeping existing file"
+          # Пробуем разные сервисы по очереди
+          SERVICES=(
+            "https://github-readme-stats.vercel.app/api?username=tanat0&theme=dracula&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"
+            "https://stats.ryo-chan.dev/api?username=tanat0&theme=dracula&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"
+          )
+          
+          for service in "${SERVICES[@]}"; do
+            echo "Trying service: $service"
+            curl -s -L --max-time 10 "$service" > github-stats.svg
+            if check_svg github-stats.svg; then
+              echo "Successfully generated stats from service"
+              break
+            fi
+          done
+          
+          # Если все сервисы недоступны, оставляем существующий файл
+          if ! check_svg github-stats.svg; then
+            echo "All services unavailable, keeping existing file"
             git checkout github-stats.svg 2>/dev/null || true
           fi
 
