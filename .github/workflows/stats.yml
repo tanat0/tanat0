@@ -32,3 +32,4 @@ jobs:
         with:
           message: "chore: update github stats"
           add: "github-stats-dark.svg github-stats-light.svg"
+          pull_strategy: "--rebase"

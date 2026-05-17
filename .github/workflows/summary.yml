@@ -30,3 +30,4 @@ jobs:
         with:
           message: "chore: update summary cards"
           add: "profile-summary-card-output"
+          pull_strategy: "--rebase"
