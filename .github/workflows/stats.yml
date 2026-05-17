@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase
           git add github-stats-dark.svg github-stats-light.svg
           git diff --cached --quiet || git commit -m "chore: update github stats"
+          git pull --rebase
           git push
