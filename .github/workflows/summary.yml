@@ -25,9 +25,11 @@ jobs:
           BRANCH_NAME: main
           AUTO_PUSH: false
 
-      - name: Commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: "chore: update summary cards"
-          add: "profile-summary-card-output"
-          pull_strategy: "--rebase"
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase
+          git add profile-summary-card-output
+          git diff --cached --quiet || git commit -m "chore: update summary cards"
+          git push
