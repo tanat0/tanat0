@@ -2,7 +2,7 @@ name: Update GitHub Stats
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # обновлять раз в день
+    - cron: "0 3 * * *"   # daily at 03:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -14,43 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate GitHub Stats
-        # Генерируем статистику через внешний API
-        # Используем тему dracula с красивыми цветами
-        # Если сервис недоступен, оставляем существующий файл
-        run: |
-          # Функция для проверки валидности SVG
-          check_svg() {
-            if [ -s "$1" ] && ! grep -qiE "error|unavailable|503|404|deployment_paused" "$1" && grep -q "<svg" "$1"; then
-              return 0
-            fi
-            return 1
-          }
-          
-          # Пробуем разные сервисы по очереди
-          SERVICES=(
-            "https://github-readme-stats.vercel.app/api?username=tanat0&theme=dracula&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"
-            "https://stats.ryo-chan.dev/api?username=tanat0&theme=dracula&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"
-          )
-          
-          for service in "${SERVICES[@]}"; do
-            echo "Trying service: $service"
-            curl -s -L --max-time 10 "$service" > github-stats.svg
-            if check_svg github-stats.svg; then
-              echo "Successfully generated stats from service"
-              break
-            fi
-          done
-          
-          # Если все сервисы недоступны, оставляем существующий файл
-          if ! check_svg github-stats.svg; then
-            echo "All services unavailable, keeping existing file"
-            git checkout github-stats.svg 2>/dev/null || true
-          fi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-      - name: Commit stats
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Generate stats SVG
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_USER: tanat0
+          OUTPUT_PATH: github-stats.svg
+        run: python scripts/generate_stats.py
+
+      - name: Commit
         uses: EndBug/add-and-commit@v9
         with:
-          message: "update github stats"
+          message: "chore: update github stats"
           add: "github-stats.svg"
-

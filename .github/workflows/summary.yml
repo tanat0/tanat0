@@ -1,8 +1,8 @@
-name: Update summary cards
+name: Update Summary Cards
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # обновлять раз в день
+    - cron: "0 3 * * *"   # daily at 03:00 UTC (same run as stats)
   workflow_dispatch:
 
 permissions:
@@ -12,22 +12,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Generate summary cards
         uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GH_PAT (repo scope) gives access to private repos —
+          # this is why language charts will show more than just Python
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         with:
           USERNAME: tanat0
           BRANCH_NAME: main
-          AUTO_PUSH: false   # отключаем автопуш
-          # Используем dracula тему для более красивого отображения
-          # GITHUB_TOKEN автоматически предоставляет доступ к приватным репо
+          AUTO_PUSH: false
 
-      - name: Commit summary cards
+      - name: Commit
         uses: EndBug/add-and-commit@v9
         with:
-          message: "update summary cards"
+          message: "chore: update summary cards"
           add: "profile-summary-card-output"
-
