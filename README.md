@@ -1,4 +1,8 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F0F12,50:1E1B4B,100:0F0F12&height=130&section=header&text=Nikita&fontSize=40&fontColor=E2E8F0&fontAlignY=40&desc=Data%20Engineer&descSize=15&descAlignY=65&animation=fadeIn" width="100%"/>
+<picture>
+  <source media="(prefers-color-scheme: light)"
+          srcset="https://capsule-render.vercel.app/api?type=waving&color=0:F6F8FA,50:EFF2FF,100:F6F8FA&height=130&section=header&text=Nikita&fontSize=40&fontColor=1F2328&fontAlignY=40&desc=Data%20Engineer&descSize=15&descAlignY=65&animation=fadeIn"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F0F12,50:1E1B4B,100:0F0F12&height=130&section=header&text=Nikita&fontSize=40&fontColor=E2E8F0&fontAlignY=40&desc=Data%20Engineer&descSize=15&descAlignY=65&animation=fadeIn" width="100%"/>
+</picture>
 
 <div align="center">
 
@@ -17,10 +21,24 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats.svg" alt="GitHub Stats"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)"
+          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-dark.svg"/>
+  <source media="(prefers-color-scheme: light)"
+          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-light.svg"/>
+  <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-dark.svg" alt="GitHub Stats"/>
+</picture>
 
-<img src="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github_dark/2-most-commit-language.svg" width="400" alt="Languages by commit"/>
-<img src="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github_dark/4-productive-time.svg" width="400" alt="Productive time"/>
+<picture>
+  <source media="(prefers-color-scheme: light)"
+          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github/2-most-commit-language.svg"/>
+  <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github_dark/2-most-commit-language.svg" width="400" alt="Languages by commit"/>
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: light)"
+          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github/4-productive-time.svg"/>
+  <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github_dark/4-productive-time.svg" width="400" alt="Productive time"/>
+</picture>
 
 </div>
 
@@ -37,4 +55,8 @@
 </picture>
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F0F12,50:1E1B4B,100:0F0F12&height=80&section=footer" width="100%"/>
+<picture>
+  <source media="(prefers-color-scheme: light)"
+          srcset="https://capsule-render.vercel.app/api?type=waving&color=0:F6F8FA,50:EFF2FF,100:F6F8FA&height=80&section=footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F0F12,50:1E1B4B,100:0F0F12&height=80&section=footer" width="100%"/>
+</picture>

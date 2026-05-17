@@ -1,27 +1,26 @@
 #!/usr/bin/env python3
 """
-GitHub Stats SVG generator — private repo aware.
+GitHub Stats SVG generator — private repo aware, dual-theme.
 
-Reads ALL repos (public + private) via PAT, queries the contribution calendar
-via GraphQL (includes private commits), and generates a self-contained SVG.
+Outputs two files:
+  github-stats-dark.svg   — Linear dark (indigo accent)
+  github-stats-light.svg  — GitHub light (blue accent)
 
 Required env:
   GH_PAT        Personal Access Token with `repo` scope
-  GH_USER       GitHub username          (default: tanat0)
-  OUTPUT_PATH   Output SVG file path     (default: github-stats.svg)
+  GH_USER       GitHub username   (default: tanat0)
 
-Excluded from stats:
-  <username>/<username>  — the profile repo itself (no real code there)
+The profile repo (<username>/<username>) is excluded from all stats.
 """
 from __future__ import annotations
 
 import os
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, List, NamedTuple, Tuple
 
 import requests
 
-GQL_URL = "https://api.github.com/graphql"
+GQL_URL  = "https://api.github.com/graphql"
 REST_URL = "https://api.github.com"
 
 LANG_COLORS: Dict[str, str] = {
@@ -44,6 +43,40 @@ LANG_COLORS: Dict[str, str] = {
     "Kotlin":     "#A97BFF",
     "Groovy":     "#E69F56",
 }
+
+
+class Theme(NamedTuple):
+    bg:         str
+    border:     str
+    text:       str
+    dim:        str
+    accent:     str
+    accent_bg:  str
+    dot_color:  str
+    dot_opacity: str
+
+
+DARK = Theme(
+    bg          = "#0F0F12",
+    border      = "#1C1C28",
+    text        = "#E2E8F0",
+    dim         = "#64748B",
+    accent      = "#6366F1",
+    accent_bg   = "rgba(99,102,241,0.10)",
+    dot_color   = "#27273A",
+    dot_opacity = "0.6",
+)
+
+LIGHT = Theme(
+    bg          = "#FFFFFF",
+    border      = "#D0D7DE",
+    text        = "#1F2328",
+    dim         = "#57606A",
+    accent      = "#0969DA",
+    accent_bg   = "rgba(9,105,218,0.08)",
+    dot_color   = "#C8D2DC",
+    dot_opacity = "0.5",
+)
 
 
 # ── API ───────────────────────────────────────────────────────────────────────
@@ -77,7 +110,6 @@ def _rest(token: str, path: str, params: dict | None = None) -> list | dict:
 # ── Data fetching ─────────────────────────────────────────────────────────────
 
 def fetch_commit_stats(token: str, username: str) -> Tuple[int, str]:
-    """Total commits (public + private) via contribution calendar."""
     meta = _gql(token, """
         query($login: String!) {
           user(login: $login) {
@@ -114,48 +146,41 @@ def fetch_commit_stats(token: str, username: str) -> Tuple[int, str]:
 def fetch_repo_and_lang_stats(
     token: str, username: str
 ) -> Tuple[int, int, Dict[str, int]]:
-    """
-    Repo counts + language breakdown from all owned repos.
-    Excludes: forks, and the profile repo (<username>/<username>).
-    """
-    skip_repo = f"{username}/{username}"
+    skip = f"{username}/{username}"   # exclude profile repo
 
-    repos = []
+    repos: list = []
     page = 1
     while True:
         batch = _rest(token, "/user/repos", {
-            "affiliation": "owner",
-            "per_page": 100,
-            "page": page,
-            "sort": "updated",
+            "affiliation": "owner", "per_page": 100,
+            "page": page, "sort": "updated",
         })
         if not isinstance(batch, list) or not batch:
             break
         repos.extend(batch)
         page += 1
 
-    # Exclude profile repo and forks from counts too
-    real_repos = [r for r in repos if r["full_name"] != skip_repo and not r.get("fork")]
-    public  = sum(1 for r in real_repos if not r["private"])
-    private = sum(1 for r in real_repos if r["private"])
+    real = [r for r in repos if r["full_name"] != skip and not r.get("fork")]
+    public  = sum(1 for r in real if not r["private"])
+    private = sum(1 for r in real if r["private"])
 
     languages: Dict[str, int] = {}
-    for repo in real_repos:
+    for repo in real:
         try:
-            lang_data = _rest(token, f"/repos/{repo['full_name']}/languages")
-            if isinstance(lang_data, dict):
-                for lang, nbytes in lang_data.items():
-                    languages[lang] = languages.get(lang, 0) + nbytes
+            ld = _rest(token, f"/repos/{repo['full_name']}/languages")
+            if isinstance(ld, dict):
+                for lang, nb in ld.items():
+                    languages[lang] = languages.get(lang, 0) + nb
         except Exception:
             pass
 
     return public, private, languages
 
 
-# ── SVG — Linear aesthetic ───────────────────────────────────────────────────
+# ── SVG ───────────────────────────────────────────────────────────────────────
 
 def _fmt(n: int) -> str:
-    return f"{n:,}".replace(",", " ")   # thin-space thousands separator
+    return f"{n:,}".replace(",", " ")   # thin-space thousands separator
 
 
 def generate_svg(
@@ -165,144 +190,119 @@ def generate_svg(
     public_repos: int,
     private_repos: int,
     languages: Dict[str, int],
+    theme: Theme,
 ) -> str:
     W = 495
-
-    # Colours — Linear dark palette
-    BG        = "#0F0F12"
-    BORDER    = "#1C1C28"
-    TEXT      = "#E2E8F0"
-    DIM       = "#64748B"
-    ACCENT    = "#6366F1"   # indigo
-    ACCENT_BG = "rgba(99,102,241,0.10)"
-    DIVIDER   = "#1C1C28"
-
+    t = theme
     total_repos = public_repos + private_repos
 
-    # ── language bar ────────────────────────────────────────────────────────
     top_langs = sorted(languages.items(), key=lambda x: -x[1])[:5]
     total_bytes = sum(v for _, v in top_langs) or 1
 
+    # ── language bar ────────────────────────────────────────────────────────
     BAR_X0, BAR_Y, BAR_W, BAR_H = 20, 158, 455, 6
-    bar_segs = ""
-    bx = BAR_X0
+    bar_segs, bx = "", BAR_X0
     for i, (lang, nb) in enumerate(top_langs):
-        pct = nb / total_bytes
-        sw  = max(int(pct * BAR_W), 2)
-        color = LANG_COLORS.get(lang, "#64748B")
-        rx = 3 if i in (0, len(top_langs) - 1) else 0
+        sw    = max(int(nb / total_bytes * BAR_W), 2)
+        color = LANG_COLORS.get(lang, t.dim)
+        rx    = 3 if i in (0, len(top_langs) - 1) else 0
         bar_segs += (
             f'<rect x="{bx}" y="{BAR_Y}" width="{sw}" height="{BAR_H}" '
             f'rx="{rx}" fill="{color}"/>'
         )
         bx += sw
 
-    # ── legend (up to 5 items, two rows of 3 / 2) ───────────────────────────
+    # ── legend ───────────────────────────────────────────────────────────────
     legend = ""
     for i, (lang, nb) in enumerate(top_langs):
-        pct_str = f"{nb / total_bytes * 100:.0f}%"
-        color   = LANG_COLORS.get(lang, "#64748B")
-        col = i % 3
-        row = i // 3
-        lx = 20 + col * 155
-        ly = 174 + row * 14
+        pct   = f"{nb / total_bytes * 100:.0f}%"
+        color = LANG_COLORS.get(lang, t.dim)
+        lx = 20 + (i % 3) * 155
+        ly = 174 + (i // 3) * 14
         legend += (
-            f'<circle cx="{lx + 4}" cy="{ly + 4}" r="3.5" fill="{color}"/>'
-            f'<text x="{lx + 13}" y="{ly + 8}" fill="{DIM}" font-size="10.5" '
+            f'<circle cx="{lx+4}" cy="{ly+4}" r="3.5" fill="{color}"/>'
+            f'<text x="{lx+13}" y="{ly+8}" fill="{t.dim}" font-size="10.5" '
             f'font-family="ui-monospace,\'Cascadia Code\',monospace">'
-            f'{lang} <tspan fill="{TEXT}" font-weight="500">{pct_str}</tspan></text>'
+            f'{lang} <tspan fill="{t.text}" font-weight="500">{pct}</tspan></text>'
         )
 
-    extra_row = len(top_langs) > 3
-    H = 205 if extra_row else 192
+    H = 205 if len(top_langs) > 3 else 192
 
     return f"""<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}"
      xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- dot-grid texture -->
     <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-      <circle cx="1.5" cy="1.5" r="1" fill="#27273A" opacity="0.6"/>
+      <circle cx="1.5" cy="1.5" r="1" fill="{t.dot_color}" opacity="{t.dot_opacity}"/>
     </pattern>
-    <!-- gradient separator -->
     <linearGradient id="sep" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="{ACCENT}" stop-opacity="0"/>
-      <stop offset="30%"  stop-color="{ACCENT}" stop-opacity="1"/>
-      <stop offset="70%"  stop-color="{ACCENT}" stop-opacity="1"/>
-      <stop offset="100%" stop-color="{ACCENT}" stop-opacity="0"/>
+      <stop offset="0%"   stop-color="{t.accent}" stop-opacity="0"/>
+      <stop offset="30%"  stop-color="{t.accent}" stop-opacity="1"/>
+      <stop offset="70%"  stop-color="{t.accent}" stop-opacity="1"/>
+      <stop offset="100%" stop-color="{t.accent}" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="sep2" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="{DIVIDER}" stop-opacity="0"/>
-      <stop offset="30%"  stop-color="{DIVIDER}" stop-opacity="1"/>
-      <stop offset="70%"  stop-color="{DIVIDER}" stop-opacity="1"/>
-      <stop offset="100%" stop-color="{DIVIDER}" stop-opacity="0"/>
+    <linearGradient id="div" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="{t.border}" stop-opacity="0"/>
+      <stop offset="20%"  stop-color="{t.border}" stop-opacity="1"/>
+      <stop offset="80%"  stop-color="{t.border}" stop-opacity="1"/>
+      <stop offset="100%" stop-color="{t.border}" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
-  <!-- Base card -->
-  <rect width="{W}" height="{H}" rx="8" fill="{BG}"/>
-  <!-- Dot grid overlay -->
+  <rect width="{W}" height="{H}" rx="8" fill="{t.bg}"/>
   <rect width="{W}" height="{H}" rx="8" fill="url(#dots)"/>
-  <!-- Border -->
-  <rect width="{W}" height="{H}" rx="8" fill="none" stroke="{BORDER}" stroke-width="1"/>
+  <rect width="{W}" height="{H}" rx="8" fill="none" stroke="{t.border}" stroke-width="1"/>
 
-  <!-- ── Header ── -->
-  <text x="20" y="30" fill="{TEXT}" font-size="15" font-weight="600"
-        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">{username}</text>
-  <!-- "Data Engineer" pill -->
+  <!-- header -->
+  <text x="20" y="30" fill="{t.text}" font-size="15" font-weight="600"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        >{username}</text>
   <rect x="366" y="15" width="109" height="20" rx="10"
-        fill="{ACCENT_BG}" stroke="{ACCENT}" stroke-width="0.8" stroke-opacity="0.4"/>
-  <text x="420" y="29" fill="{ACCENT}" font-size="10" font-weight="500"
+        fill="{t.accent_bg}" stroke="{t.accent}" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="420" y="29" fill="{t.accent}" font-size="10" font-weight="500"
         text-anchor="middle"
-        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Data Engineer</text>
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        >Data Engineer</text>
 
-  <!-- Gradient separator -->
   <rect x="20" y="42" width="455" height="1" fill="url(#sep)"/>
 
-  <!-- ── Stats — 3 columns ── -->
-  <!-- col 1: commits -->
-  <text x="88" y="80" fill="{ACCENT}" font-size="24" font-weight="700"
+  <!-- commits -->
+  <text x="88" y="80" fill="{t.accent}" font-size="24" font-weight="700"
         font-family="ui-monospace,'Cascadia Code',monospace"
         text-anchor="middle">{_fmt(total_commits)}</text>
-  <text x="88" y="97" fill="{DIM}" font-size="11" text-anchor="middle"
+  <text x="88" y="97" fill="{t.dim}" font-size="11" text-anchor="middle"
         font-family="-apple-system,sans-serif">commits</text>
-  <text x="88" y="111" fill="{DIM}" font-size="9" text-anchor="middle"
+  <text x="88" y="111" fill="{t.dim}" font-size="9" text-anchor="middle"
         font-family="-apple-system,sans-serif" opacity="0.65">public + private</text>
 
-  <!-- divider 1 -->
-  <line x1="188" y1="52" x2="188" y2="120" stroke="{BORDER}" stroke-width="1"/>
+  <line x1="188" y1="52" x2="188" y2="120" stroke="{t.border}" stroke-width="1"/>
 
-  <!-- col 2: repos -->
-  <text x="248" y="80" fill="{TEXT}" font-size="24" font-weight="700"
+  <!-- repos -->
+  <text x="248" y="80" fill="{t.text}" font-size="24" font-weight="700"
         font-family="ui-monospace,'Cascadia Code',monospace"
         text-anchor="middle">{total_repos}</text>
-  <text x="248" y="97" fill="{DIM}" font-size="11" text-anchor="middle"
+  <text x="248" y="97" fill="{t.dim}" font-size="11" text-anchor="middle"
         font-family="-apple-system,sans-serif">repositories</text>
-  <text x="248" y="111" fill="{DIM}" font-size="9" text-anchor="middle"
+  <text x="248" y="111" fill="{t.dim}" font-size="9" text-anchor="middle"
         font-family="-apple-system,sans-serif" opacity="0.65">{public_repos} pub · {private_repos} priv</text>
 
-  <!-- divider 2 -->
-  <line x1="308" y1="52" x2="308" y2="120" stroke="{BORDER}" stroke-width="1"/>
+  <line x1="308" y1="52" x2="308" y2="120" stroke="{t.border}" stroke-width="1"/>
 
-  <!-- col 3: member since -->
-  <text x="402" y="80" fill="{TEXT}" font-size="24" font-weight="700"
+  <!-- member since -->
+  <text x="402" y="80" fill="{t.text}" font-size="24" font-weight="700"
         font-family="ui-monospace,'Cascadia Code',monospace"
         text-anchor="middle">{member_since}</text>
-  <text x="402" y="97" fill="{DIM}" font-size="11" text-anchor="middle"
+  <text x="402" y="97" fill="{t.dim}" font-size="11" text-anchor="middle"
         font-family="-apple-system,sans-serif">member since</text>
 
-  <!-- ── Languages ── -->
-  <rect x="20" y="128" width="455" height="1" fill="url(#sep2)"/>
-  <text x="20" y="145" fill="{DIM}" font-size="9.5" letter-spacing="1"
+  <!-- languages -->
+  <rect x="20" y="128" width="455" height="1" fill="url(#div)"/>
+  <text x="20" y="145" fill="{t.dim}" font-size="9.5" letter-spacing="1"
         font-family="-apple-system,sans-serif">LANGUAGES</text>
-  <text x="475" y="145" fill="{DIM}" font-size="9" text-anchor="end"
+  <text x="475" y="145" fill="{t.dim}" font-size="9" text-anchor="end"
         font-family="-apple-system,sans-serif" opacity="0.6">all repos incl. private</text>
 
-  <!-- bar -->
   {bar_segs}
-
-  <!-- legend -->
   {legend}
-
 </svg>"""
 
 
@@ -314,25 +314,30 @@ def main() -> None:
         print("ERROR: GH_PAT env var is required", file=sys.stderr)
         sys.exit(1)
 
-    username    = os.environ.get("GH_USER", "tanat0")
-    output_path = os.environ.get("OUTPUT_PATH", "github-stats.svg")
+    username = os.environ.get("GH_USER", "tanat0")
 
     print(f"Fetching stats for {username} …")
-
     commits, member_since = fetch_commit_stats(token, username)
-    print(f"  Commits:     {commits}  (since {member_since})")
+    print(f"  Commits:  {commits}  (since {member_since})")
 
     public, private, languages = fetch_repo_and_lang_stats(token, username)
-    print(f"  Repos:       {public} public + {private} private (profile repo excluded)")
-
+    print(f"  Repos:    {public} public + {private} private (profile repo excluded)")
     total_b = sum(v for _, v in sorted(languages.items(), key=lambda x: -x[1])[:5]) or 1
     for lang, nb in sorted(languages.items(), key=lambda x: -x[1])[:5]:
         print(f"    {lang}: {nb/total_b*100:.1f}%")
 
-    svg = generate_svg(username, commits, member_since, public, private, languages)
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(svg)
-    print(f"Saved → {output_path}")
+    args = (username, commits, member_since, public, private, languages)
+
+    dark_svg  = generate_svg(*args, theme=DARK)
+    light_svg = generate_svg(*args, theme=LIGHT)
+
+    for path, content in [
+        ("github-stats-dark.svg",  dark_svg),
+        ("github-stats-light.svg", light_svg),
+    ]:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"Saved → {path}")
 
 
 if __name__ == "__main__":
