@@ -38,7 +38,15 @@
 
 <br/>
 
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=0F0F12&color=E2E8F0&line=6366F1&point=6366F1&area=true&area_color=6366F1&hide_border=true&radius=6)](https://github.com/tanat0)
+<a href="https://github.com/tanat0">
+  <picture>
+    <source media="(prefers-color-scheme: dark)"
+            srcset="https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=0F0F12&color=E2E8F0&line=6366F1&point=6366F1&area=true&area_color=6366F1&hide_border=true&radius=6"/>
+    <source media="(prefers-color-scheme: light)"
+            srcset="https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=FFFFFF&color=1F2328&line=0969DA&point=0969DA&area=true&area_color=0969DA&hide_border=false&border_color=D0D7DE&radius=6"/>
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=0F0F12&color=E2E8F0&line=6366F1&point=6366F1&area=true&area_color=6366F1&hide_border=true&radius=6" alt="Activity Graph"/>
+  </picture>
+</a>
 
 </div>
 
