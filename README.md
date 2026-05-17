@@ -14,6 +14,13 @@
 
 ![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apache-airflow&logoColor=white)
 ![ClickHouse](https://img.shields.io/badge/ClickHouse-F2C811?style=flat-square&logo=clickhouse&logoColor=black)
+![Scala](https://img.shields.io/badge/Scala-DC322F?style=flat-square&logo=scala&logoColor=white)
+![Spark](https://img.shields.io/badge/Spark-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
+![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white)
+
+<br/>
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=13&duration=2500&pause=900&color=6366F1&center=true&vCenter=true&width=435&lines=Building+data+pipelines+that+actually+scale;Kafka+%C2%B7+ClickHouse+%C2%B7+PostgreSQL+%C2%B7+Python;Stream+processing+%7C+OLAP+%7C+Orchestration)](https://github.com/tanat0)
 
 </div>
 
@@ -29,16 +36,9 @@
   <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-dark.svg" alt="GitHub Stats"/>
 </picture>
 
-<picture>
-  <source media="(prefers-color-scheme: light)"
-          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github/2-most-commit-language.svg"/>
-  <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github_dark/2-most-commit-language.svg" width="400" alt="Languages by commit"/>
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: light)"
-          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github/4-productive-time.svg"/>
-  <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/profile-summary-card-output/github_dark/4-productive-time.svg" width="400" alt="Productive time"/>
-</picture>
+<br/>
+
+[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=0F0F12&color=E2E8F0&line=6366F1&point=6366F1&area=true&area_color=6366F1&hide_border=true&radius=6)](https://github.com/tanat0)
 
 </div>
 

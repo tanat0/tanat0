@@ -151,8 +151,9 @@ def fetch_repo_and_lang_stats(
     repos: list = []
     page = 1
     while True:
+        # organization_member includes org repos → picks up Haskell/Scala/etc.
         batch = _rest(token, "/user/repos", {
-            "affiliation": "owner", "per_page": 100,
+            "affiliation": "owner,organization_member", "per_page": 100,
             "page": page, "sort": "updated",
         })
         if not isinstance(batch, list) or not batch:
@@ -160,12 +161,18 @@ def fetch_repo_and_lang_stats(
         repos.extend(batch)
         page += 1
 
-    real = [r for r in repos if r["full_name"] != skip and not r.get("fork")]
-    public  = sum(1 for r in real if not r["private"])
-    private = sum(1 for r in real if r["private"])
+    # repo counts: only personal repos (not org-owned)
+    owned = [r for r in repos
+             if r["owner"]["login"] == username
+             and r["full_name"] != skip
+             and not r.get("fork")]
+    public  = sum(1 for r in owned if not r["private"])
+    private = sum(1 for r in owned if r["private"])
 
+    # language stats: all repos the user contributes to (incl. org repos)
+    all_repos = [r for r in repos if r["full_name"] != skip and not r.get("fork")]
     languages: Dict[str, int] = {}
-    for repo in real:
+    for repo in all_repos:
         try:
             ld = _rest(token, f"/repos/{repo['full_name']}/languages")
             if isinstance(ld, dict):
