@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Sync to latest remote
+        run: |
+          git fetch origin
+          git reset --hard origin/main
+
       - name: Generate summary cards
         uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
@@ -30,6 +35,4 @@ jobs:
           git add profile-summary-card-output
           git diff --cached --quiet && exit 0
           git commit -m "chore: update summary cards"
-          git fetch origin
-          git rebase origin/main -X ours
           git push

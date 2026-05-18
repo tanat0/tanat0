@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Sync to latest remote
+        run: |
+          git fetch origin
+          git reset --hard origin/main
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -34,6 +39,4 @@ jobs:
           git add github-stats-dark.svg github-stats-light.svg
           git diff --cached --quiet && exit 0
           git commit -m "chore: update github stats"
-          git fetch origin
-          git rebase origin/main -X ours
           git push
