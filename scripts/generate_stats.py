@@ -148,31 +148,51 @@ def fetch_repo_and_lang_stats(
 ) -> Tuple[int, int, Dict[str, int]]:
     skip = f"{username}/{username}"   # exclude profile repo
 
-    repos: list = []
+    # Personal repos (for counts + lang stats)
+    personal: list = []
     page = 1
     while True:
-        # organization_member includes org repos → picks up Haskell/Scala/etc.
         batch = _rest(token, "/user/repos", {
-            "affiliation": "owner,organization_member", "per_page": 100,
+            "affiliation": "owner", "per_page": 100,
             "page": page, "sort": "updated",
         })
         if not isinstance(batch, list) or not batch:
             break
-        repos.extend(batch)
+        personal.extend(batch)
         page += 1
 
-    # repo counts: only personal repos (not org-owned)
-    owned = [r for r in repos
-             if r["owner"]["login"] == username
-             and r["full_name"] != skip
-             and not r.get("fork")]
+    owned = [r for r in personal
+             if r["full_name"] != skip and not r.get("fork")]
     public  = sum(1 for r in owned if not r["private"])
     private = sum(1 for r in owned if r["private"])
 
-    # language stats: all repos the user contributes to (incl. org repos)
-    all_repos = [r for r in repos if r["full_name"] != skip and not r.get("fork")]
+    # Org repos — /orgs/{org}/repos catches repos that affiliation= misses
+    org_repos: list = []
+    try:
+        orgs = _rest(token, "/user/orgs", {"per_page": 100})
+        if isinstance(orgs, list):
+            print(f"  Orgs: {[o['login'] for o in orgs]}")
+            for org in orgs:
+                pg = 1
+                while True:
+                    batch = _rest(token, f"/orgs/{org['login']}/repos", {
+                        "per_page": 100, "page": pg, "type": "all",
+                    })
+                    if not isinstance(batch, list) or not batch:
+                        break
+                    org_repos.extend(r for r in batch if not r.get("fork"))
+                    pg += 1
+    except Exception as e:
+        print(f"  Warning: org repos fetch failed: {e}", file=sys.stderr)
+
+    print(f"  Repos for lang stats: {len(owned)} personal + {len(org_repos)} org")
+
+    seen: set = set()
     languages: Dict[str, int] = {}
-    for repo in all_repos:
+    for repo in owned + org_repos:
+        if repo["full_name"] in seen:
+            continue
+        seen.add(repo["full_name"])
         try:
             ld = _rest(token, f"/repos/{repo['full_name']}/languages")
             if isinstance(ld, dict):
@@ -329,9 +349,10 @@ def main() -> None:
 
     public, private, languages = fetch_repo_and_lang_stats(token, username)
     print(f"  Repos:    {public} public + {private} private (profile repo excluded)")
-    total_b = sum(v for _, v in sorted(languages.items(), key=lambda x: -x[1])[:5]) or 1
-    for lang, nb in sorted(languages.items(), key=lambda x: -x[1])[:5]:
-        print(f"    {lang}: {nb/total_b*100:.1f}%")
+    total_b = sum(languages.values()) or 1
+    print(f"  All languages ({len(languages)}):")
+    for lang, nb in sorted(languages.items(), key=lambda x: -x[1]):
+        print(f"    {lang}: {nb/total_b*100:.2f}%")
 
     args = (username, commits, member_since, public, private, languages)
 
