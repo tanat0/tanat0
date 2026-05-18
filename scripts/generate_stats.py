@@ -161,38 +161,18 @@ def fetch_repo_and_lang_stats(
         personal.extend(batch)
         page += 1
 
+    # repo counts: non-fork personal repos only
     owned = [r for r in personal
              if r["full_name"] != skip and not r.get("fork")]
     public  = sum(1 for r in owned if not r["private"])
     private = sum(1 for r in owned if r["private"])
 
-    # Org repos — /orgs/{org}/repos catches repos that affiliation= misses
-    org_repos: list = []
-    try:
-        orgs = _rest(token, "/user/orgs", {"per_page": 100})
-        if isinstance(orgs, list):
-            print(f"  Orgs: {[o['login'] for o in orgs]}")
-            for org in orgs:
-                pg = 1
-                while True:
-                    batch = _rest(token, f"/orgs/{org['login']}/repos", {
-                        "per_page": 100, "page": pg, "type": "all",
-                    })
-                    if not isinstance(batch, list) or not batch:
-                        break
-                    org_repos.extend(r for r in batch if not r.get("fork"))
-                    pg += 1
-    except Exception as e:
-        print(f"  Warning: org repos fetch failed: {e}", file=sys.stderr)
+    # language stats: all personal repos incl. forks (homework, study projects)
+    lang_repos = [r for r in personal if r["full_name"] != skip]
+    print(f"  Repos for lang stats: {len(owned)} owned + {len(lang_repos) - len(owned)} forks")
 
-    print(f"  Repos for lang stats: {len(owned)} personal + {len(org_repos)} org")
-
-    seen: set = set()
     languages: Dict[str, int] = {}
-    for repo in owned + org_repos:
-        if repo["full_name"] in seen:
-            continue
-        seen.add(repo["full_name"])
+    for repo in lang_repos:
         try:
             ld = _rest(token, f"/repos/{repo['full_name']}/languages")
             if isinstance(ld, dict):
