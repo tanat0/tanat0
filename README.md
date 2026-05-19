@@ -1,7 +1,5 @@
 Data Engineer · data platforms, ETL pipelines, automation and infrastructure tooling.
 
-<br/>
-
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)
 ![ClickHouse](https://img.shields.io/badge/ClickHouse-F2C811?style=flat&logo=clickhouse&logoColor=black)
 ![Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)
@@ -22,7 +20,7 @@ Local-first manager for sing-box proxy nodes with deploys, logs and profile supp
 Veterinary blood donation matching platform built with Next.js, FastAPI and PostgreSQL.
 
 ### internal tooling & ETL experiments
-Automation scripts, orchestration flows and infrastructure-related tooling.
+Internal tooling, orchestration flows and infrastructure automation.
 
 ---
 
