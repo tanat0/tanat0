@@ -1,76 +1,20 @@
-<svg width="495" height="205" viewBox="0 0 495 205"
+<svg width="495" height="84" viewBox="0 0 495 84"
      xmlns="http://www.w3.org/2000/svg">
   <defs>
     <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
       <circle cx="1.5" cy="1.5" r="1" fill="#C8D2DC" opacity="0.5"/>
     </pattern>
-    <linearGradient id="sep" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#0969DA" stop-opacity="0"/>
-      <stop offset="30%"  stop-color="#0969DA" stop-opacity="1"/>
-      <stop offset="70%"  stop-color="#0969DA" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#0969DA" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="div" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#D0D7DE" stop-opacity="0"/>
-      <stop offset="20%"  stop-color="#D0D7DE" stop-opacity="1"/>
-      <stop offset="80%"  stop-color="#D0D7DE" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#D0D7DE" stop-opacity="0"/>
-    </linearGradient>
   </defs>
 
-  <rect width="495" height="205" rx="8" fill="#FFFFFF"/>
-  <rect width="495" height="205" rx="8" fill="url(#dots)"/>
-  <rect width="495" height="205" rx="8" fill="none" stroke="#D0D7DE" stroke-width="1"/>
+  <rect width="495" height="84" rx="8" fill="#FFFFFF"/>
+  <rect width="495" height="84" rx="8" fill="url(#dots)"/>
+  <rect width="495" height="84" rx="8" fill="none" stroke="#D0D7DE" stroke-width="1"/>
 
-  <!-- header -->
-  <text x="20" y="30" fill="#1F2328" font-size="15" font-weight="600"
-        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
-        >tanat0</text>
-  <rect x="366" y="15" width="109" height="20" rx="10"
-        fill="rgba(9,105,218,0.08)" stroke="#0969DA" stroke-width="0.8" stroke-opacity="0.4"/>
-  <text x="420" y="29" fill="#0969DA" font-size="10" font-weight="500"
-        text-anchor="middle"
-        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
-        >Data Engineer</text>
-
-  <rect x="20" y="42" width="455" height="1" fill="url(#sep)"/>
-
-  <!-- commits -->
-  <text x="88" y="80" fill="#0969DA" font-size="24" font-weight="700"
-        font-family="ui-monospace,'Cascadia Code',monospace"
-        text-anchor="middle">565</text>
-  <text x="88" y="97" fill="#57606A" font-size="11" text-anchor="middle"
-        font-family="-apple-system,sans-serif">commits</text>
-  <text x="88" y="111" fill="#57606A" font-size="9" text-anchor="middle"
-        font-family="-apple-system,sans-serif" opacity="0.65">public + private</text>
-
-  <line x1="188" y1="52" x2="188" y2="120" stroke="#D0D7DE" stroke-width="1"/>
-
-  <!-- repos -->
-  <text x="248" y="80" fill="#1F2328" font-size="24" font-weight="700"
-        font-family="ui-monospace,'Cascadia Code',monospace"
-        text-anchor="middle">9</text>
-  <text x="248" y="97" fill="#57606A" font-size="11" text-anchor="middle"
-        font-family="-apple-system,sans-serif">repositories</text>
-  <text x="248" y="111" fill="#57606A" font-size="9" text-anchor="middle"
-        font-family="-apple-system,sans-serif" opacity="0.65">1 pub · 8 priv</text>
-
-  <line x1="308" y1="52" x2="308" y2="120" stroke="#D0D7DE" stroke-width="1"/>
-
-  <!-- member since -->
-  <text x="402" y="80" fill="#1F2328" font-size="24" font-weight="700"
-        font-family="ui-monospace,'Cascadia Code',monospace"
-        text-anchor="middle">2022</text>
-  <text x="402" y="97" fill="#57606A" font-size="11" text-anchor="middle"
-        font-family="-apple-system,sans-serif">member since</text>
-
-  <!-- languages -->
-  <rect x="20" y="128" width="455" height="1" fill="url(#div)"/>
-  <text x="20" y="145" fill="#57606A" font-size="9.5" letter-spacing="1"
+  <text x="20" y="16" fill="#57606A" font-size="9.5" letter-spacing="1"
         font-family="-apple-system,sans-serif">LANGUAGES</text>
-  <text x="475" y="145" fill="#57606A" font-size="9" text-anchor="end"
-        font-family="-apple-system,sans-serif" opacity="0.6">all repos incl. private</text>
+  <text x="475" y="16" fill="#57606A" font-size="9" text-anchor="end"
+        font-family="-apple-system,sans-serif" opacity="0.6">incl. private repos</text>
 
-  <rect x="20" y="158" width="204" height="6" rx="3" fill="#3572A5"/><rect x="224" y="158" width="138" height="6" rx="0" fill="#57606A"/><rect x="362" y="158" width="94" height="6" rx="0" fill="#3178C6"/><rect x="456" y="158" width="8" height="6" rx="0" fill="#F1E05A"/><rect x="464" y="158" width="8" height="6" rx="3" fill="#563D7C"/>
-  <circle cx="24" cy="178" r="3.5" fill="#3572A5"/><text x="33" y="182" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">Python <tspan fill="#1F2328" font-weight="500">45%</tspan></text><circle cx="179" cy="178" r="3.5" fill="#57606A"/><text x="188" y="182" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">Jupyter Notebook <tspan fill="#1F2328" font-weight="500">30%</tspan></text><circle cx="334" cy="178" r="3.5" fill="#3178C6"/><text x="343" y="182" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">TypeScript <tspan fill="#1F2328" font-weight="500">21%</tspan></text><circle cx="24" cy="192" r="3.5" fill="#F1E05A"/><text x="33" y="196" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">JavaScript <tspan fill="#1F2328" font-weight="500">2%</tspan></text><circle cx="179" cy="192" r="3.5" fill="#563D7C"/><text x="188" y="196" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">CSS <tspan fill="#1F2328" font-weight="500">2%</tspan></text>
+  <rect x="20" y="28" width="214" height="6" rx="3" fill="#3572A5"/><rect x="234" y="28" width="129" height="6" rx="0" fill="#57606A"/><rect x="363" y="28" width="88" height="6" rx="0" fill="#3178C6"/><rect x="451" y="28" width="8" height="6" rx="0" fill="#563D7C"/><rect x="459" y="28" width="8" height="6" rx="0" fill="#F1E05A"/><rect x="467" y="28" width="4" height="6" rx="3" fill="#E34C26"/>
+  <circle cx="24" cy="48" r="3.5" fill="#3572A5"/><text x="33" y="52" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">Python <tspan fill="#1F2328" font-weight="500">47%</tspan></text><circle cx="179" cy="48" r="3.5" fill="#57606A"/><text x="188" y="52" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">Jupyter Notebook <tspan fill="#1F2328" font-weight="500">28%</tspan></text><circle cx="334" cy="48" r="3.5" fill="#3178C6"/><text x="343" y="52" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">TypeScript <tspan fill="#1F2328" font-weight="500">19%</tspan></text><circle cx="24" cy="64" r="3.5" fill="#563D7C"/><text x="33" y="68" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">CSS <tspan fill="#1F2328" font-weight="500">2%</tspan></text><circle cx="179" cy="64" r="3.5" fill="#F1E05A"/><text x="188" y="68" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">JavaScript <tspan fill="#1F2328" font-weight="500">2%</tspan></text><circle cx="334" cy="64" r="3.5" fill="#E34C26"/><text x="343" y="68" fill="#57606A" font-size="10.5" font-family="ui-monospace,'Cascadia Code',monospace">HTML <tspan fill="#1F2328" font-weight="500">1%</tspan></text>
 </svg>
