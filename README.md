@@ -34,10 +34,10 @@ Data platforms · Infrastructure · Automation · Self-hosting · Backend system
 
 <picture>
   <source media="(prefers-color-scheme: dark)"
-          srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=tanat0&layout=compact&hide_border=true&langs_count=6&theme=dark&bg_color=0F0F12&title_color=6366F1&text_color=E2E8F0"/>
+          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-dark.svg"/>
   <source media="(prefers-color-scheme: light)"
-          srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=tanat0&layout=compact&hide_border=true&langs_count=6"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=tanat0&layout=compact&hide_border=true&langs_count=6&theme=dark&bg_color=0F0F12&title_color=6366F1&text_color=E2E8F0" alt="Top Languages"/>
+          srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-light.svg"/>
+  <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-dark.svg" alt="Top Languages"/>
 </picture>
 
 <picture>
