@@ -1,28 +1,29 @@
-<picture>
-  <source media="(prefers-color-scheme: light)"
-          srcset="https://capsule-render.vercel.app/api?type=waving&color=0:F6F8FA,50:EFF2FF,100:F6F8FA&height=130&section=header&text=Nikita&fontSize=40&fontColor=1F2328&fontAlignY=40&desc=Data%20Engineer&descSize=15&descAlignY=65&animation=fadeIn"/>
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F0F12,50:1E1B4B,100:0F0F12&height=130&section=header&text=Nikita&fontSize=40&fontColor=E2E8F0&fontAlignY=40&desc=Data%20Engineer&descSize=15&descAlignY=65&animation=fadeIn" width="100%"/>
-</picture>
+# Nikita
 
-<div align="center">
-
-[![Kafka](https://skillicons.dev/icons?i=kafka&theme=dark)](https://kafka.apache.org)
-[![PostgreSQL](https://skillicons.dev/icons?i=postgres&theme=dark)](https://postgresql.org)
-[![Docker](https://skillicons.dev/icons?i=docker&theme=dark)](https://docker.com)
-[![Python](https://skillicons.dev/icons?i=py&theme=dark)](https://python.org)
-[![Linux](https://skillicons.dev/icons?i=linux&theme=dark)](https://kernel.org)
-
-![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apache-airflow&logoColor=white)
-![ClickHouse](https://img.shields.io/badge/ClickHouse-F2C811?style=flat-square&logo=clickhouse&logoColor=black)
-![Scala](https://img.shields.io/badge/Scala-DC322F?style=flat-square&logo=scala&logoColor=white)
-![Spark](https://img.shields.io/badge/Spark-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
-![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white)
+Data Engineer · data platforms, ETL pipelines, automation and infrastructure tooling.
 
 <br/>
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=13&duration=2500&pause=900&color=6366F1&center=true&vCenter=true&width=435&lines=Building+data+pipelines+that+actually+scale;Kafka+%C2%B7+ClickHouse+%C2%B7+PostgreSQL+%C2%B7+Python;Stream+processing+%7C+OLAP+%7C+Orchestration)](https://github.com/tanat0)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![ClickHouse](https://img.shields.io/badge/ClickHouse-F2C811?style=flat-square&logo=clickhouse&logoColor=black)
+![Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white)
+![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apache-airflow&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
 
-</div>
+---
+
+## Projects
+
+- **local-singbox-manager** — local-first manager for sing-box proxy nodes; systemd integration, CLI, Python
+- **animal-donor-platform** *(private)* — veterinary blood donation matching platform; Next.js, FastAPI, PostgreSQL
+- internal data tooling and ETL experiments
+
+## Interests
+
+Data Engineering · Infrastructure & self-hosting · Workflow automation · Networking · Privacy tooling
 
 ---
 
@@ -36,23 +37,6 @@
   <img src="https://raw.githubusercontent.com/tanat0/tanat0/main/github-stats-dark.svg" alt="GitHub Stats"/>
 </picture>
 
-<br/>
-
-<a href="https://github.com/tanat0">
-  <picture>
-    <source media="(prefers-color-scheme: dark)"
-            srcset="https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=0F0F12&color=E2E8F0&line=6366F1&point=6366F1&area=true&area_color=6366F1&hide_border=true&radius=6"/>
-    <source media="(prefers-color-scheme: light)"
-            srcset="https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=FFFFFF&color=1F2328&line=0969DA&point=0969DA&area=true&area_color=0969DA&hide_border=false&border_color=D0D7DE&radius=6"/>
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=tanat0&bg_color=0F0F12&color=E2E8F0&line=6366F1&point=6366F1&area=true&area_color=6366F1&hide_border=true&radius=6" alt="Activity Graph"/>
-  </picture>
-</a>
-
-</div>
-
----
-
-<div align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)"
           srcset="https://raw.githubusercontent.com/tanat0/tanat0/main/output/github-contribution-grid-snake-dark.svg"/>
@@ -61,10 +45,5 @@
   <img alt="contribution snake"
        src="https://raw.githubusercontent.com/tanat0/tanat0/main/output/github-contribution-grid-snake-dark.svg"/>
 </picture>
-</div>
 
-<picture>
-  <source media="(prefers-color-scheme: light)"
-          srcset="https://capsule-render.vercel.app/api?type=waving&color=0:F6F8FA,50:EFF2FF,100:F6F8FA&height=80&section=footer"/>
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F0F12,50:1E1B4B,100:0F0F12&height=80&section=footer" width="100%"/>
-</picture>
+</div>
